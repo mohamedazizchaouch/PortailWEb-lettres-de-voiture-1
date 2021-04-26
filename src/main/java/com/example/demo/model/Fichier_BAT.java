@@ -34,7 +34,7 @@ public class Fichier_BAT {
 	private Imprimeur imprimeur ;
 	
 	
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "fichier_BAT",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private Set<Commentaire_BAT> commentaires_BAT ;
 	

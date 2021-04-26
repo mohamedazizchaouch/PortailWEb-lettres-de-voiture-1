@@ -57,7 +57,7 @@ public class Commande {
 	@JoinColumn(name = "client_id")
 	private Client client ;
 	
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "commande",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private Set<Commentaire_commande> commentaire_commande ;
 	

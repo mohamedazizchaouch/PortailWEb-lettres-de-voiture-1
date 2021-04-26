@@ -93,22 +93,5 @@ public class CommandeRestApi {
 		return comm_service.getcomm_impression();
 	}
 	
-	//stat_refproduit
-	@GetMapping(value = "/stat_refproduit")
-	public List<Cl>stat_refproduit(){
-		return  ss.stat_refproduit();
-	}
-	
-	//stat_nbrclient
-	@GetMapping(value = "/stat_nbrclient")
-	public List<Sclient> stat_nbrclient(){
-		return ss.stat_nbrclient();
-	}
-	
-	//stat_nbrcarnet
-	@GetMapping(value = "/stat_nbrcarnet")
-	public List<Scarnet>stat_nbrcarnet(){
-		return ss.stat_nbrcarnet();
-	}
 	
 }

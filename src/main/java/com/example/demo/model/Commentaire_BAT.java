@@ -22,12 +22,12 @@ public class Commentaire_BAT {
 	private String text_commentaire ;
 	
 	private  Date date_heure_commentaire ;
-	@JsonIgnore
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "client_id")
 	private Client client ;
 
-	@JsonIgnore
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "imprimeur_id")
 	private Imprimeur imprimeur ;

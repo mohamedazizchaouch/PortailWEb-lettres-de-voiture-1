@@ -12,6 +12,7 @@ import com.example.demo.dao.Fichier_batDao;
 import com.example.demo.dao.ImprimeurDao;
 import com.example.demo.model.Client;
 import com.example.demo.model.Commentaire_BAT;
+import com.example.demo.model.Etat_commande;
 import com.example.demo.model.Fichier_BAT;
 import com.example.demo.model.Imprimeur;
 
@@ -47,6 +48,7 @@ public class commentaireBat_service {
 		f.getCommentaires_BAT().add(c);
 		c.setImprimeur(i);
 		c.setFichier_BAT(f);
+	f.getCommande().setEtat_commande(Etat_commande.Modification_BAT);
 		cdao.save(c);
 		fdao.save(f);
 		idao.save(i);

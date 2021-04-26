@@ -8,12 +8,17 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Admin_vente extends Utilisateur {
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "admin_vente",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private Set<Commande> commandes ;
 	
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "admin_vente",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private Set<Commentaire_commande> commentaire_commande ;
 

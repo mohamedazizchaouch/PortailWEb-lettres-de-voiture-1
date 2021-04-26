@@ -8,14 +8,19 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Imprimeur extends Utilisateur {
 	@OneToMany(mappedBy = "imprimeur",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private Set<Fichier_BAT> fichiers_BAT ;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "imprimeur",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private Set<Commentaire_BAT> commentaires_BAT ;
 	
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "imprimeur",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private Set<Commentaire_commande> commentaire_commande ; 
 

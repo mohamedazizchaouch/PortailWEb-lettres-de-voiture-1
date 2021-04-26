@@ -82,14 +82,15 @@ public List<Commande>getHistoriquecomm_client (int idcl){
 	 Commande c = commdao.findById(idc).get();
 	 c.setEtat_commande(Etat_commande.Bat_refuser);
 	 commdao.save(c);
+
 	 SimpleMailMessage message = new SimpleMailMessage();
      
-     message.setTo("mohamedaziz.chaouch@esprit.tn");
-     message.setSubject("Test Simple Email");
-     message.setText("Hello, Im testing Simple Email");
+     message.setTo(c.getFichier_BAT().getImprimeur().getEmail());
+     message.setSubject("Information Commande "+c.getNum_commande());
+    message.setText("le fichier-bat de la commande "+c.getNum_commande()+" a été refuser .\n merci bien de consulter la commande et de rectifier les erreurs ");
 
-     // Send Message!
-     this.emailSender.send(message);
+    // Send Message!
+    this.emailSender.send(message);
 	 return 1;
  }
 
