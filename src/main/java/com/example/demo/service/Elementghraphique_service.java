@@ -24,8 +24,9 @@ public class Elementghraphique_service {
 		Commande c = comdao.findById(idc).get();
 		c.getElements_graphique().add(e);
 		e.setCommande(c);
-		comdao.save(c);
 		elldao.save(e);
+		comdao.save(c);
+		
 		return 1;
 	}
 	

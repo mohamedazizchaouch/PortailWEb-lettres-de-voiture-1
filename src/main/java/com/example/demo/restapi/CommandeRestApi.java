@@ -1,5 +1,6 @@
 package com.example.demo.restapi;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dao.CommandeDao;
 import com.example.demo.model.Cl;
 import com.example.demo.model.Commande;
+import com.example.demo.model.Etat_commande;
 import com.example.demo.model.Produit;
 import com.example.demo.model.Scarnet;
 import com.example.demo.model.Sclient;
@@ -48,6 +50,8 @@ public class CommandeRestApi {
 	
 	@PostMapping(value = "/{ida}")
 	public int createcommande(@RequestBody Commande c,@PathVariable int ida) {
+		c.setDate_creation_dossier(new Date());
+		c.setEtat_commande(Etat_commande.Encours_BAT);
 		comm_service.addcommande(c,ida);
 		return 1;
 	}

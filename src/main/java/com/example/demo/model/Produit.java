@@ -21,6 +21,16 @@ public class Produit {
 	@JsonIgnore
 	@OneToOne(mappedBy = "produit",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private Commande commande ;
+	
+	
+
+	public String getNom_produit() {
+		return nom_produit;
+	}
+
+	public void setNom_produit(String nom_produit) {
+		this.nom_produit = nom_produit;
+	}
 
 	public int getId_produit() {
 		return id_produit;

@@ -46,7 +46,13 @@ public class FacturePdfexport {
 		
 	}
 	private void WriteTableData(PdfPTable table) {
-		table.addCell("145233822841");
+for(Commande c : com) {
+	table.addCell(""+c.getNum_commande());
+	table.addCell(""+c.getProduit().getNom_produit());
+	table.addCell(""+c.getQuntite());
+	table.addCell(""+c.getPrix_vente_HT());
+		}
+		
 		table.addCell("carnet type T");
 		table.addCell("150");
 		table.addCell("2558.30");

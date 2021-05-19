@@ -30,8 +30,9 @@ public class Commande_service {
 		Admin_vente a=  adddao.findById(ida).get();
 		a.getCommandes().add(c);
 		c.setAdmin_vente(a);
-		adddao.save(a);
 		commdao.save(c);
+		adddao.save(a);
+		
 		return 1 ;
 	}
 	

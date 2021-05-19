@@ -103,13 +103,14 @@ public class Imprimeur_service {
 	
 
 
-	public void writePdf(OutputStream outputStream) throws Exception {
+	public void writePdf(OutputStream outputStream,int idc) throws Exception {
 	
 	    Document document = new Document();
 	    PdfWriter.getInstance(document, outputStream);
 	   
 	    
 	    List<Commande> com = new ArrayList<Commande>();
+	    com.add(comdao.findById(idc).get());
 	    FacturePdfexport facture = new FacturePdfexport(com);
 		facture.export(outputStream);
 	}
@@ -132,7 +133,7 @@ public class Imprimeur_service {
 	    int smtpPort = 587; //replace this with a valid port
 
 	    String sender = "pfe.itsterone@gmail.com"; //replace this with a valid sender email address
-	    String recipient = "mohamedaziz.chaouch@esprit.tn"; //replace this with a valid recipient email address
+	    String recipient = "med.dhia.hajjem93@gmail.com"; //replace this with a valid recipient email address
 	    String content = "vous trouvez votre facture ci-joint"; //this will be the text of the email
 	    String subject = "Facture lettre de voiture";
 	    
@@ -159,7 +160,7 @@ try {
 	 
 	//now write the PDF content to the output stream
      outputStream = new ByteArrayOutputStream();
-     writePdf(outputStream);
+     writePdf(outputStream,idco);
      byte[] bytes = outputStream.toByteArray();
    //construct the pdf body part
      DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");

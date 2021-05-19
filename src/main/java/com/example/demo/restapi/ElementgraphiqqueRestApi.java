@@ -21,7 +21,7 @@ public class ElementgraphiqqueRestApi {
 	private Elementghraphique_service  es;
 	
 	
-	@PostMapping(value = "{idc}")
+	@PostMapping(value = "/{idc}")
 	public int create (@RequestBody Element_ghraphique e, @PathVariable int idc) {
 		return es.add(e, idc);
 	}
