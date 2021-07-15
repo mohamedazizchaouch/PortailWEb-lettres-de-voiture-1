@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Client;
+import com.example.demo.model.User;
 import com.example.demo.model.Utilisateur;
 import com.example.demo.service.Utilisateur_service;
 
@@ -31,7 +32,7 @@ public class UtilisateurRestApi {
 				}
 	
 	@GetMapping(value = "/{mdp}/{login}")
-	public int login (@PathVariable(value = "mdp") String mdp ,@PathVariable(value = "login") String login) {
+	public User login (@PathVariable(value = "mdp") String mdp ,@PathVariable(value = "login") String login) {
 		
 		System.out.println("11111111"+mdp);
 		System.out.println("11111111"+login);

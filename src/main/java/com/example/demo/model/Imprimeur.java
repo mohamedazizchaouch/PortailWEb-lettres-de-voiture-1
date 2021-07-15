@@ -23,10 +23,32 @@ public class Imprimeur extends Utilisateur {
 	@JsonIgnore
 	@OneToMany(mappedBy = "imprimeur",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private Set<Commentaire_commande> commentaire_commande ; 
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "imprimeur",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	private Set<Commande> commande ;
 
 	
+	private String Contact_imp ;
 	
 	
+	
+	public Set<Commande> getCommande() {
+		return commande;
+	}
+
+	public void setCommande(Set<Commande> commande) {
+		this.commande = commande;
+	}
+
+	public String getContact_imp() {
+		return Contact_imp;
+	}
+
+	public void setContact_imp(String contact_imp) {
+		Contact_imp = contact_imp;
+	}
+
 	public Set<Commentaire_commande> getCommentaire_commande() {
 		return commentaire_commande;
 	}
@@ -62,10 +84,17 @@ public class Imprimeur extends Utilisateur {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Imprimeur(String login, String mdp, String email, int num_Telephone, int num_Fax) {
+	public Imprimeur(String login, String mdp, String email, int num_Telephone, int num_Fax,
+			Set<Fichier_BAT> fichiers_BAT, Set<Commentaire_BAT> commentaires_BAT,
+			Set<Commentaire_commande> commentaire_commande, String contact_imp) {
 		super(login, mdp, email, num_Telephone, num_Fax);
-		// TODO Auto-generated constructor stub
+		this.fichiers_BAT = fichiers_BAT;
+		this.commentaires_BAT = commentaires_BAT;
+		this.commentaire_commande = commentaire_commande;
+		Contact_imp = contact_imp;
 	}
+
+	
 
 	
 	

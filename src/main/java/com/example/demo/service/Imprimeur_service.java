@@ -1,8 +1,16 @@
 package com.example.demo.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -18,6 +26,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +38,15 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dao.CommandeDao;
 import com.example.demo.dao.Facturedao;
 import com.example.demo.dao.ImprimeurDao;
+import com.example.demo.model.Client;
 import com.example.demo.model.Commande;
 import com.example.demo.model.Etat_commande;
 import com.example.demo.model.Facture;
 import com.example.demo.model.FacturePdfexport;
+import com.example.demo.model.FcturePdfexport1;
 import com.example.demo.model.Fichier_BAT;
 import com.example.demo.model.Imprimeur;
+import com.example.demo.model.bon_liv;
 import com.example.demo.model.comm_encours_expoterpdf;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -57,6 +70,30 @@ public class Imprimeur_service {
 	private Facturedao fdao ;
 	
 	
+
+	//liste client imprimeur 
+	public List<Client> get_clt_imp(int idimp){	
+		Imprimeur i = impdao.findById(idimp).get();
+		List<Client> clts = new ArrayList<Client>();
+		for (Commande c : i.getCommande()) {
+			if(clts.contains(c.getClient())== false) {
+				clts.add(c.getClient());
+			}
+			
+			
+		}
+		
+		return clts;
+	}
+	
+	public Imprimeur getimp_byid(int id) {
+		return impdao.findById(id).get();
+	}
+	
+	public List<Imprimeur>getall(){
+		return impdao.findAll();
+	}
+	
 	public int addimprimeur(Imprimeur i) {
 		impdao.save(i);
 		return 1;
@@ -68,9 +105,17 @@ public class Imprimeur_service {
 	public 	List<Commande>commandeencours_imprimeur(int idimp){
 		Imprimeur i = impdao.findById(idimp).get();
 		List<Commande>cc = new ArrayList<>();
-	for(Fichier_BAT f : i.getFichiers_BAT()) {
-		if((f.getCommande().getEtat_commande()!=Etat_commande.Livraison )|| (f.getCommande().getEtat_commande()!=Etat_commande.Expedier ))
-		cc.add(f.getCommande());
+		
+	
+	i.getCommande();
+	for( Commande c : i.getCommande()) {
+		
+		if ((c.getEtat_commande()==Etat_commande.Encours_BAT)||(c.getEtat_commande()==Etat_commande.Bat_refuser)||
+				(c.getEtat_commande()==Etat_commande.Attente_validation_BAT)||(c.getEtat_commande()==Etat_commande.Modification_BAT)){
+			cc.add(c);
+		}
+		
+		
 	}
 		
 		return cc;
@@ -86,21 +131,74 @@ public class Imprimeur_service {
 		
 	}
 	
+	public void writePdf1(HttpServletResponse response,int idc) throws Exception {
+		
+	    Document document = new Document();
+	    PdfWriter.getInstance(document, response.getOutputStream());
+	   
+	   
+	    
+	    List<Commande> com = new ArrayList<Commande>();
+	    com.add(comdao.findById(idc).get());
+	    FcturePdfexport1 facture = new FcturePdfexport1(com);
+		facture.export(response);
+	}
+	public void writePdf_bon_liv(HttpServletResponse response,int idc) throws Exception {
+		
+	    Document document = new Document();
+	    PdfWriter.getInstance(document, response.getOutputStream());
+	   
+	   
+	    Commande c =comdao.findById(idc).get();
+	    bon_liv Bl = new bon_liv(c);
+	   Bl.export(response);
+		
+	}
+	
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response,int idi) throws ServletException, java.io.IOException {
+		  
+		DateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd");
+		String currentDatetime = dateformatter.format(new Date());
+		List<Commande>cmds = commandeencours_imprimeur(idi);
+		
+		
+		  PrintWriter out = response.getWriter();
+		  String headerkey="content-disposition";
+			String headerValue="attachment; filename=commande_encours-"+currentDatetime+".txt";
+		  response.setContentType("text/plain");
+		  response.setHeader(headerkey, headerValue);
+		  out.println("commande en cours : ");
+		  for(Commande c : cmds) {
+			  out.println(""+c.getDate_commande()+"  ;  "+c.getProduit().getId_produit()+"  ;  "+c.getQuntite()+"  ;  "+c.getEtat_commande()+"  ;  "+c.getNum_commande());
+		  }
+		  
+		  
+		}
 	
 	
 	//liste des facture (espace imprimeur)
 	public 	List<Commande>commande_pret_a_facturer(int idimp){
 		Imprimeur i = impdao.findById(idimp).get();
 		List<Commande>cc = new ArrayList<>();
-	for(Fichier_BAT f : i.getFichiers_BAT()) {
-		if(f.getCommande().getEtat_commande()==Etat_commande.Expedier)
-		cc.add(f.getCommande());
+	for(Commande c: i.getCommande()) {
+		if(c.getEtat_commande()==Etat_commande.BAT_accepter)
+		cc.add(c);
 	}
 		
 		return cc;
 	}
 	
-	
+	public 	List<Commande>commande_pret_a_livrer(int idimp){
+		Imprimeur i = impdao.findById(idimp).get();
+		List<Commande>cc = new ArrayList<>();
+	for(Commande c: i.getCommande()) {
+		if(c.getEtat_commande()==Etat_commande.Livraison)
+		cc.add(c);
+	}
+		
+		return cc;
+	}
 
 
 	public void writePdf(OutputStream outputStream,int idc) throws Exception {
@@ -118,7 +216,7 @@ public class Imprimeur_service {
 	public void mail(int idco) {
 		
 		Commande c= comdao.findById(idco).get();
-		c.setEtat_commande(Etat_commande.Livraison);
+		c.setEtat_commande(Etat_commande.Impression);
 	comdao.save(c);
 	Facture f =new Facture();
 	f.setDate_commande(c.getDate_commande());
@@ -133,7 +231,7 @@ public class Imprimeur_service {
 	    int smtpPort = 587; //replace this with a valid port
 
 	    String sender = "pfe.itsterone@gmail.com"; //replace this with a valid sender email address
-	    String recipient = "med.dhia.hajjem93@gmail.com"; //replace this with a valid recipient email address
+	    String recipient = "mohamedaziz.chaouch@esprit.tn"; //replace this with a valid recipient email address
 	    String content = "vous trouvez votre facture ci-joint"; //this will be the text of the email
 	    String subject = "Facture lettre de voiture";
 	    

@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ManyToAny;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,8 +35,10 @@ public class Fichier_BAT {
 	private Imprimeur imprimeur ;
 	
 	
+	
 	@JsonIgnore
-	@OneToMany(mappedBy = "fichier_BAT",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "fichier_BAT",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER,orphanRemoval=true)
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private Set<Commentaire_BAT> commentaires_BAT ;
 	
 	

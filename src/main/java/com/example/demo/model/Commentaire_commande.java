@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Commentaire_commande {
 	@Id
@@ -28,6 +30,7 @@ public class Commentaire_commande {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "imprimeur_id")
 	private Imprimeur imprimeur ;
+
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "commande_id")

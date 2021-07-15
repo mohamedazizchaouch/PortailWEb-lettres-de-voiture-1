@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,8 @@ public class commentaireBatRestApi {
 	
 	@Autowired
 	private commentaireBat_service cs ;
+	
+	
 	
 	@PostMapping(value = "/ajout_comm_client/{idcl}/{idf}")
 	public int addcommentaire_client(@PathVariable int idcl,@PathVariable int idf ,@RequestBody Commentaire_BAT c) {
@@ -40,6 +43,10 @@ public class commentaireBatRestApi {
 	@GetMapping(value = "/{id}")
 	public List<Commentaire_BAT>getcomms(@PathVariable int id){
 		return cs.getcomms_by_fich_bat(id);
+	}
+	@DeleteMapping(value = "/{id}")
+	public int deletee(@PathVariable int id) {
+		return cs.deletecmmsbyfich(id);
 	}
 	
 	

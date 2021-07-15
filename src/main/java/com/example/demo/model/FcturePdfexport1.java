@@ -16,16 +16,14 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.PdfCell;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class FacturePdfexport {
-	
+public class FcturePdfexport1 {
 	private List<Commande> com ;
 
-	public FacturePdfexport(List<Commande> com) {
+	public FcturePdfexport1(List<Commande> com) {
 		super();
 		this.com = com;
 	}
@@ -59,11 +57,11 @@ for(Commande c : com) {
 		
 		
 	}
-	public void export(OutputStream  response) throws DocumentException, IOException {
+	public void export(HttpServletResponse response) throws DocumentException, IOException {
 	double x =	(com.get(0).getQuntite()*com.get(0).getPrix_vente_HT())+com.get(0).getFrais_transport_achat_HT();
 	double xttc = x+(x*0.18);
 		Document document = new Document(PageSize.A4);
-		PdfWriter.getInstance(document, response);
+		PdfWriter.getInstance(document,  response.getOutputStream());
 		DateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd");
 		String currentDatetime = dateformatter.format(new Date());
 		document.open();
@@ -72,7 +70,7 @@ for(Commande c : com) {
 		document.add(new Paragraph(""));
 		document.add(new Paragraph(""));
 		document.add(new Paragraph(""));
-		document.add(new Paragraph(" Facture",font));
+		document.add(new Paragraph(" Facture du CLIENT : "+com.get(0).getClient().getCode_client(),font));
 		document.add(new Paragraph("-------------------------------"));
 		document.add(new Paragraph("N de la facture : "+0001));
 		document.add(new Paragraph("Date de la facture : "+currentDatetime ));

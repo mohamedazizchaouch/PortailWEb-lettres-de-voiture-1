@@ -57,6 +57,10 @@ public class Commande {
 	@JoinColumn(name = "client_id")
 	private Client client ;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "imprimeur_id")
+	private Imprimeur imprimeur ;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "commande",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private Set<Commentaire_commande> commentaire_commande ;
@@ -72,6 +76,32 @@ public class Commande {
 		
 	}
 	
+	
+	
+	public Facture getFacture() {
+		return facture;
+	}
+
+
+
+	public void setFacture(Facture facture) {
+		this.facture = facture;
+	}
+
+
+
+	public Imprimeur getImprimeur() {
+		return imprimeur;
+	}
+
+
+
+	public void setImprimeur(Imprimeur imprimeur) {
+		this.imprimeur = imprimeur;
+	}
+
+
+
 	public Client getClient() {
 		return client;
 	}
@@ -168,6 +198,8 @@ public class Commande {
 	public void setEtat_commande(Etat_commande etat_commande) {
 		this.etat_commande = etat_commande;
 	}
+	
+	
 	
 	public Commande(Date date_creation_dossier, Date date_commande, String ref_commercial, int quntite,
 			double prix_achat_HT, double prix_vente_HT, double frais_transport_achat_HT, String text_a_repliquer,

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dao.CommandeDao;
 import com.example.demo.model.Cl;
 import com.example.demo.model.Commande;
+import com.example.demo.model.Data;
 import com.example.demo.model.Etat_commande;
 import com.example.demo.model.Produit;
 import com.example.demo.model.Scarnet;
@@ -36,6 +38,39 @@ public class CommandeRestApi {
 	@Autowired
 	private Statistique_service ss;
 	
+	
+	@GetMapping(value = "zzzz")
+	public List<Data>aaaa(){
+		return comm_service.getalltasktest();
+	}
+	
+	@PutMapping(value = "/modifdate/{id}")
+	public String modif_date(@PathVariable int id ,@RequestBody Commande nc) {
+		return comm_service.modif_date_creation_dossier(id, nc);
+	}
+	@PutMapping(value = "/modifdate_etat/{id}")
+	public String modif_date_etat(@PathVariable int id ,@RequestBody Commande nc) {
+		return comm_service.modif_date_creation_dossier_etat(id, nc);
+	}
+	
+	
+	//modiftext_repliquer
+	@PutMapping(value = "/modift/{id}")
+	public String modif_t(@PathVariable int id ,@RequestBody Commande nc) {
+		return comm_service.Modif_text_arepliquer(nc, id);
+	}
+	@PutMapping(value = "/modifqunt/{id}")
+	public String modif_qunt(@PathVariable int id ,@RequestBody Commande nc) {
+		return comm_service.modif_qunt(nc, id);
+	}
+	
+	//affecte imp to cmd 
+	@GetMapping(value = "/aff_i_to_c/{idi}/{idc}")
+	public String affecte(@PathVariable int idi ,@PathVariable int idc) {
+		return ps
+				.affectercmd_imp(idi, idc);
+	}
+	
 	//affecte produit to commande
 	@GetMapping(value = "/aff_p_to_c/{idp}/{idc}")
 	public String get(@PathVariable int idp , @PathVariable int idc) {
@@ -49,11 +84,12 @@ public class CommandeRestApi {
 	}
 	
 	@PostMapping(value = "/{ida}")
-	public int createcommande(@RequestBody Commande c,@PathVariable int ida) {
-		c.setDate_creation_dossier(new Date());
+	public Commande createcommande(@RequestBody Commande c,@PathVariable int ida) {
+	
+		c.setDate_commande(new Date());
 		c.setEtat_commande(Etat_commande.Encours_BAT);
-		comm_service.addcommande(c,ida);
-		return 1;
+		
+		return comm_service.addcommande(c,ida);
 	}
 	
 	@GetMapping (produces = MediaType.APPLICATION_JSON_VALUE)
@@ -97,5 +133,9 @@ public class CommandeRestApi {
 		return comm_service.getcomm_impression();
 	}
 	
+	@GetMapping(value = "/{id}")
+	public Commande getcmd_by_id(@PathVariable int id) {
+		return comm_service.getcmd_byid(id);
+	}
 	
 }

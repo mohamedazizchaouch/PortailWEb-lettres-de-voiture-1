@@ -12,6 +12,7 @@ import com.example.demo.model.Commande;
 import com.example.demo.model.Produit;
 import com.example.demo.model.Scarnet;
 import com.example.demo.model.Sclient;
+import com.example.demo.model.Suser_ville;
 
 @Service
 public class Statistique_service {
@@ -31,5 +32,12 @@ public class Statistique_service {
 	public List<Scarnet>stat_nbrcarnet(){
 		return comdao.stat_nbrcarnet();
 	}
-
+	
+	public List<Suser_ville>stat_nbrclt_par_gouvernerat(){
+		return comdao.stat_clt_pargov();
+	}
+	
+	public List<Suser_ville>stat_nbrclt_par_cp(){
+		return comdao.stat_clt_par_cp()
+;	}
 }

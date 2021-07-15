@@ -11,6 +11,7 @@ import com.example.demo.model.Cl;
 import com.example.demo.model.Commande;
 import com.example.demo.model.Scarnet;
 import com.example.demo.model.Sclient;
+import com.example.demo.model.Suser_ville;
 
 public interface CommandeDao extends JpaRepository<Commande, Integer>{
 	
@@ -22,6 +23,13 @@ public interface CommandeDao extends JpaRepository<Commande, Integer>{
 	
 	@Query("select new com.example.demo.model.Scarnet(Sum(c.quntite),p.nom_produit) from Commande c ,Produit p where p.id_produit=c.produit GROUP BY c.produit ")
 	public List<Scarnet>stat_nbrcarnet();
-
+	
+	@Query("select  new com.example.demo.model.Suser_ville(count(*),cl.gouvernorat) from Commande c , Client cl where cl.id =c.client GROUP BY gouvernorat")
+	public List<Suser_ville>stat_clt_pargov();
+	
+	
+	@Query("select  new com.example.demo.model.Suser_ville(count(*),cl.code_postal_adresse_facturation) from Commande c , Client cl where cl.id =c.client GROUP BY code_postal_adresse_facturation")
+	public List<Suser_ville>stat_clt_par_cp();
+	
 
 }

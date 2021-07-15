@@ -1,5 +1,7 @@
 package com.example.demo.restapi;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +32,8 @@ public class CommentaireCommRestApi {
 	
 	@PostMapping(value = "/ajouter_com_admin/{ida}/{idc}")
 public int ajouter_comm_admin(@RequestBody Commentaire_commande c ,@PathVariable int ida ,@PathVariable int idc) {
+		DateFormat dateformatter = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+		String currentDatetime = dateformatter.format(new Date());
 		c.setDate_heure_commentaire(new Date());
 		return cs.ajouter_commentaire_admin(c, ida, idc);
 	}

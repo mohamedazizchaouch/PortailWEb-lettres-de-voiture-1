@@ -22,6 +22,12 @@ public class ProduitRestApi {
 	
 	
 	
+	
+	@GetMapping(value = "/{id}")
+	public Produit getbyid(@PathVariable int id) {
+		return ps.getproduitbyid(id);
+	}
+	
 	@GetMapping
 	public List<Produit> getallproduit(){
 		return ps.getallproduit() ;

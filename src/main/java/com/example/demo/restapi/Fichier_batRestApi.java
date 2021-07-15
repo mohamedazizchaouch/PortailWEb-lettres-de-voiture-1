@@ -1,6 +1,10 @@
 package com.example.demo.restapi;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,5 +27,14 @@ public class Fichier_batRestApi {
 	@PostMapping(value = "/{idimp}/{idcom}")
 	public int createfichierbat(@RequestBody Fichier_BAT f,@PathVariable int idimp, @PathVariable int idcom) {
 		return fs.createficherbat(f,idimp,idcom);
+	}
+	
+	@GetMapping(value = "/{id}")
+	public List<Fichier_BAT> getfichs(@PathVariable int id){
+		return fs.getfichbat_cmd(id);
+	}
+	@DeleteMapping(value = "/{idf}/{idc}/{idi}")
+	public int deelete(@PathVariable int idf,@PathVariable int idc,@PathVariable int idi) {
+		return fs.delete(idi, idc, idf);
 	}
 }

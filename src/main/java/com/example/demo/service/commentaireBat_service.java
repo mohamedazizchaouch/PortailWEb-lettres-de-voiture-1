@@ -28,6 +28,13 @@ public class commentaireBat_service {
 	@Autowired
 	private ImprimeurDao idao  ;
 	
+	
+public int deletecomm (int id) {
+		cdao.deleteById(id);
+		return 1;
+		
+	}
+	
 	public int ajouter_commentaire_client(int idcl , int idf,Commentaire_BAT c) {
 		Client cl = cldao.findById(idcl).get();
 		Fichier_BAT f =fdao.findById(idf).get();
@@ -69,5 +76,34 @@ public class commentaireBat_service {
 		}
 		return cms ;
 	}
+	
+	public int deletecmmsbyfich(int idf) {
+		Fichier_BAT f = fdao.findById(idf).get();
+		List<Commentaire_BAT> cms = new ArrayList<Commentaire_BAT>();
+		for(Commentaire_BAT c : cdao.findAll()) {
+			if(c.getFichier_BAT().getId()==idf) {
+				f.getCommentaires_BAT().remove(c);
+				fdao.save(f);
+				c.setFichier_BAT(null);
+				if(c.getImprimeur()!= null) {
+					c.getImprimeur().getCommentaires_BAT().remove(c);
+					c.setImprimeur(null);
+				}
+				
+				if (c.getClient()!=null) {
+					c.getClient().getCommentaires_BAT().remove(c);
+					c.setClient(null);
+				}
+				
+				
+				
+				cdao.delete(c);
+				
+			}
+		}
+		return 1;
+	}
+	
+	
 
 }
