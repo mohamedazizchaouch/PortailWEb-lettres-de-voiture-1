@@ -9,8 +9,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Image;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.PageSize;
@@ -57,19 +60,21 @@ for(Commande c : com) {
 		
 		
 	}
-	public void export(HttpServletResponse response) throws DocumentException, IOException {
+	public void export(HttpServletResponse response) throws DocumentException, IOException, BadElementException {
 	double x =	(com.get(0).getQuntite()*com.get(0).getPrix_vente_HT())+com.get(0).getFrais_transport_achat_HT();
 	double xttc = x+(x*0.18);
 		Document document = new Document(PageSize.A4);
 		PdfWriter.getInstance(document,  response.getOutputStream());
 		DateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd");
 		String currentDatetime = dateformatter.format(new Date());
+	
 		document.open();
 		Font font = FontFactory.getFont(FontFactory.HELVETICA);
 		document.add(new Paragraph(""));
 		document.add(new Paragraph(""));
 		document.add(new Paragraph(""));
 		document.add(new Paragraph(""));
+		
 		document.add(new Paragraph(" Facture du CLIENT : "+com.get(0).getClient().getCode_client(),font));
 		document.add(new Paragraph("-------------------------------"));
 		document.add(new Paragraph("N de la facture : "+0001));

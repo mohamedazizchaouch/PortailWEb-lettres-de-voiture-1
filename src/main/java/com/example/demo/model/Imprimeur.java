@@ -73,26 +73,24 @@ public class Imprimeur extends Utilisateur {
 		this.fichiers_BAT = fichiers_BAT;
 	}
 
-	public Imprimeur(String login, String mdp, String email, int num_Telephone, int num_Fax,
-			Set<Fichier_BAT> fichiers_BAT) {
-		super(login, mdp, email, num_Telephone, num_Fax);
-		this.fichiers_BAT = fichiers_BAT;
-	}
-
+	
 	public Imprimeur() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Imprimeur(String login, String mdp, String email, int num_Telephone, int num_Fax,
+	public Imprimeur(int id, String login, String mdp, String email, int num_Telephone, boolean etat, int num_Fax,
 			Set<Fichier_BAT> fichiers_BAT, Set<Commentaire_BAT> commentaires_BAT,
-			Set<Commentaire_commande> commentaire_commande, String contact_imp) {
-		super(login, mdp, email, num_Telephone, num_Fax);
+			Set<Commentaire_commande> commentaire_commande, Set<Commande> commande, String contact_imp) {
+		super(id, login, mdp, email, num_Telephone, etat, num_Fax);
 		this.fichiers_BAT = fichiers_BAT;
 		this.commentaires_BAT = commentaires_BAT;
 		this.commentaire_commande = commentaire_commande;
+		this.commande = commande;
 		Contact_imp = contact_imp;
 	}
+
+	
 
 	
 

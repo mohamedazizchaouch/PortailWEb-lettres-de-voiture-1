@@ -13,11 +13,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.mail.Authenticator;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -33,6 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.CommandeDao;
@@ -55,7 +59,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 
-
+@EnableScheduling
 @Service
 public class Imprimeur_service {
 	
@@ -69,8 +73,55 @@ public class Imprimeur_service {
 	@Autowired
 	private Facturedao fdao ;
 	
+	//@Scheduled(cron =  "0 * * * * ?")
+public void Rapport_periodique() {
+	String to="mohamedaziz.chaouch@esprit.tn";
+	String from="pfe.itsterone@gmail.com";
+	String smtpHost = "smtp.gmail.com"; //replace this with a valid host
+    int smtpPort = 587; //replace this with a valid port
+    
+	   Properties properties = new Properties();
+	    properties.put("mail.smtp.host", smtpHost);
+	    properties.put("mail.smtp.port", smtpPort);    
+	    properties.put("mail.transport.protocol", "smtp");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.debug", "true");
+	
+	
+	
+	  Session session = Session.getDefaultInstance(properties, new Authenticator() {
+	        protected PasswordAuthentication  getPasswordAuthentication() {
+	        return new PasswordAuthentication(
+	                    "pfe.itsterone@gmail.com", "az147852369iz");
+	                }
+	    } );
+	 String url="https://app.powerbi.com/view?r=eyJrIjoiMWE1OTkyNjAtYTEzNy00M2JiLWExODktN2VlODJkNGIyY2Y0IiwidCI6ImEyZDgzMzZlLWEyOTktNGQ1Mi04NjM2LWI3ZWY4YzExN2ExZCIsImMiOjh9&pageName=ReportSectionc1a520ea3990e52d05d2";
+	  try {
+		  MimeMessage message = new MimeMessage(session);
+		  message.setFrom(new InternetAddress(from));
+		  message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));;
+		  message.setSubject("Portail_web_Rapport des statistique!");
+		  message.setContent("<h1>Portail web vente des lettres de voiture</h1>"
+		  		+ "<p>Ce e-mail contient le rapport de statistique </p>"
+		  		
+		  		+ "<p>Pour visualiser le rapport  <a  href=\""+url+"\" > cliquer ici <a/>  </p>"
+		  		+ "<p>Bonne reception</p>"
+		  	
+		  		
+		  		,"text/html");
+		  Transport.send(message);
+		  System.out.println("doneee ");
+	  }catch(MessagingException mex) {
+		  mex.printStackTrace();
+	  }
+	
+	
+	
 	
 
+}
+	
 	//liste client imprimeur 
 	public List<Client> get_clt_imp(int idimp){	
 		Imprimeur i = impdao.findById(idimp).get();
@@ -95,11 +146,74 @@ public class Imprimeur_service {
 	}
 	
 	public int addimprimeur(Imprimeur i) {
+		Random ran= new Random();
+		int nb ;
+		nb=100000+ran.nextInt(999999-100000);
+		String mdp ="I_mdp"+nb;
+		i.setMdp(mdp);
 		impdao.save(i);
+		String to=i.getEmail();
+		String from="pfe.itsterone@gmail.com";
+		String smtpHost = "smtp.gmail.com"; //replace this with a valid host
+	    int smtpPort = 587; //replace this with a valid port
+	    
+		   Properties properties = new Properties();
+		    properties.put("mail.smtp.host", smtpHost);
+		    properties.put("mail.smtp.port", smtpPort);    
+		    properties.put("mail.transport.protocol", "smtp");
+	        properties.put("mail.smtp.auth", "true");
+	        properties.put("mail.smtp.starttls.enable", "true");
+	        properties.put("mail.debug", "true");
+		
+		
+		
+		  Session session = Session.getDefaultInstance(properties, new Authenticator() {
+		        protected PasswordAuthentication  getPasswordAuthentication() {
+		        return new PasswordAuthentication(
+		                    "pfe.itsterone@gmail.com", "az147852369iz");
+		                }
+		    } );
+		  String url="http://localhost:1919/api/imprimeur/act/"+i.getId();
+		  try {
+			  MimeMessage message = new MimeMessage(session);
+			  message.setFrom(new InternetAddress(from));
+			  message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));;
+			  message.setSubject("Portail_web_creation_compte imprimeur!");
+			  message.setContent("<h1>Portail web vente des lettres de voiture</h1>"
+			  		+ "<p>Votre compte Imprimeur a été creer avec succes </p>"
+			  		+ "<p> Votre mot de passe actuelle est:</p>"
+			  		+mdp
+			  		+ "<p>Pour activer votre compte <a  href=\""+url+"\" > cliquer ici <a/>  </p>"
+			  		+ "<p>Bonne reception</p>"
+			  	
+			  		
+			  		,"text/html");
+			  Transport.send(message);
+			  System.out.println("doneee ");
+		  }catch(MessagingException mex) {
+			  mex.printStackTrace();
+		  }
+		
+		
+		
+		
+		
+		
+		
+	   // message.setText("Votre compte a été creer avec succes   .\n Votre mot de passe est : "+mdp+" pour modifier votre mot de passe cliquer ici :");
+
+	  
+		
 		return 1;
 	}
 	
-	
+	public int acitvate(int  idi) {
+		Imprimeur i= impdao.findById(idi).get();
+		i.setEtat(true);
+		impdao.save(i);
+		
+		return 1 ;
+	}
 	
 	//dossier encours (espace imprimeur)
 	public 	List<Commande>commandeencours_imprimeur(int idimp){

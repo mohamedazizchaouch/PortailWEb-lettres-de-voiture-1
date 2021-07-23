@@ -16,6 +16,7 @@ public class Utilisateur {
 	private String Mdp ;
 	private String Email ;
 	private int num_Telephone ;
+	private boolean etat=false ;
 	private int num_Fax ;
 	
 	@Override
@@ -59,12 +60,21 @@ public class Utilisateur {
 	public void setNum_Fax(int num_Fax) {
 		this.num_Fax = num_Fax;
 	}
-	public Utilisateur(String login, String mdp, String email, int num_Telephone, int num_Fax) {
+
+	public boolean isEtat() {
+		return etat;
+	}
+	public void setEtat(boolean etat) {
+		this.etat = etat;
+	}
+	public Utilisateur(int id, String login, String mdp, String email, int num_Telephone, boolean etat, int num_Fax) {
 		super();
+		Id = id;
 		Login = login;
 		Mdp = mdp;
 		Email = email;
 		this.num_Telephone = num_Telephone;
+		this.etat = etat;
 		this.num_Fax = num_Fax;
 	}
 	public Utilisateur() {

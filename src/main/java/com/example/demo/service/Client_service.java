@@ -2,6 +2,17 @@ package com.example.demo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -26,6 +37,13 @@ public JavaMailSender emailSender;
 
 public Client getclient_byid(int id) {
 	return clientdao.findById(id).get();
+}
+
+public int activate(int idc) {
+	Client c= clientdao.findById(idc).get();
+	c.setEtat(true);
+	clientdao.save(c);
+	return 1;
 }
 
 
@@ -87,7 +105,57 @@ public Client updateaddl(int idc ,Client nc) {
 }
 
 public int addClient ( Client c) {
+	Random ran= new Random();
+	int nb ;
+	nb=100000+ran.nextInt(999999-100000);
+	String mdp ="C_mdp"+nb;
+	c.setMdp(mdp);
 	clientdao.save(c);
+	String to=c.getEmail();
+	String from="pfe.itsterone@gmail.com";
+	String smtpHost = "smtp.gmail.com"; //replace this with a valid host
+    int smtpPort = 587; //replace this with a valid port
+    
+    Properties properties = new Properties();
+    properties.put("mail.smtp.host", smtpHost);
+    properties.put("mail.smtp.port", smtpPort);    
+    properties.put("mail.transport.protocol", "smtp");
+    properties.put("mail.smtp.auth", "true");
+    properties.put("mail.smtp.starttls.enable", "true");
+    properties.put("mail.debug", "true");
+
+
+
+  Session session = Session.getDefaultInstance(properties, new Authenticator() {
+        protected PasswordAuthentication  getPasswordAuthentication() {
+        return new PasswordAuthentication(
+                    "pfe.itsterone@gmail.com", "az147852369iz");
+                }
+    } );
+  String url="http://localhost:1919/api/client/act/"+c.getId();
+  try {
+	  MimeMessage message = new MimeMessage(session);
+	  message.setFrom(new InternetAddress(from));
+	  message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));;
+	  message.setSubject("Portail_web_creation_compte Client!");
+	  message.setContent("<h1>Portail web vente des lettres de voiture</h1>"
+	  		+ "<p>Votre compte Client a été creer avec succes </p>"
+	  		+ "<p> Votre mot de passe actuelle est:</p>"
+	  		+mdp
+	  		+ "<p>Pour activer votre compte <a  href=\""+url+"\" > cliquer ici <a/>  </p>"
+	  		+ "<p>Bonne reception</p>"
+	  	
+	  		
+	  		,"text/html");
+	  Transport.send(message);
+	  System.out.println("doneee ");
+  }catch(MessagingException mex) {
+	  mex.printStackTrace();
+  }
+
+
+
+	
 	return  1 ;
 }
 

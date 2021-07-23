@@ -45,6 +45,12 @@ public class ImprimeurRestApi {
 	
 	
 	
+	@GetMapping(value = "/act/{id}")
+	public int activate(@PathVariable int id) {
+		return imps.acitvate(id);
+	}
+	
+	
 	@PostMapping
 	public int creatimp(@RequestBody Imprimeur i) {
 	return 	imps.addimprimeur(i);

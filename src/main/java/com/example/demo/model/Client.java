@@ -155,13 +155,18 @@ private String pays_facturation ;
 	
 	
 	
-	public Client(String login, String mdp, String email, int num_Telephone, int num_Fax, String code_client,
-			String raison_social, String personne_a_contacter, String adresse_facturation,
+	
+	public Client() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Client(int id, String login, String mdp, String email, int num_Telephone, boolean etat, int num_Fax,
+			String code_client, String raison_social, String personne_a_contacter, String adresse_facturation,
 			String ville_adresse_facturation, String rue_adresse_facturation, String code_postal_adresse_facturation,
 			String gouvernorat, String pays_facturation, String ville_adresse_facturation_liv,
 			String rue_adresse_facturation_liv, String code_postal_adresse_liv, String govvernorat_liv, String pays_liv,
 			String adresse_livraison, Set<Commande> commande, Set<Commentaire_BAT> commentaires_BAT) {
-		super(login, mdp, email, num_Telephone, num_Fax);
+		super(id, login, mdp, email, num_Telephone, etat, num_Fax);
 		this.code_client = code_client;
 		this.raison_social = raison_social;
 		this.personne_a_contacter = personne_a_contacter;
@@ -180,14 +185,7 @@ private String pays_facturation ;
 		this.commande = commande;
 		this.commentaires_BAT = commentaires_BAT;
 	}
-	public Client() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public Client(String login, String mdp, String email, int num_Telephone, int num_Fax) {
-		super(login, mdp, email, num_Telephone, num_Fax);
-		// TODO Auto-generated constructor stub
-	}
+
 	
 	
 

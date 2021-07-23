@@ -19,11 +19,21 @@ public class Utilisateur_service {
 	@Autowired
 	private UtilisateurDao userdao ;
 	
+	
+	public int updatepasword(int id,String mdp) {
+		Utilisateur u = userdao.findById(id).get();
+		u.setMdp(mdp);
+		userdao.save(u);
+		
+		return 1;
+		
+	}
 	public List<Utilisateur> getalluserss () {
 	 List<Utilisateur> users =userdao.findAll();
 
 		return users ; 
 	}
+	
 	
 	public User login (String mdp ,String login ) {
 		List <Utilisateur> users = userdao.findAll();

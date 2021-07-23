@@ -34,6 +34,10 @@ public class ClientRestApi {
 	private Chatbot_service chs;
 	
 	
+	@GetMapping(value ="/act/{id}")
+	public int active(@PathVariable int id) {
+		return clientservice.activate(id);
+	}
 	
 	@GetMapping(value = "/mail/{nom}/{Prenom}/{raison_social}/{mail}/{addresse}/{num_tell}/{num_fax}")
 	public void envoyerfacture( @PathVariable String nom,@PathVariable String Prenom,@PathVariable String raison_social,

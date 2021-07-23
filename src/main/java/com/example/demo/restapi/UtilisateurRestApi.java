@@ -25,6 +25,11 @@ public class UtilisateurRestApi {
 	private Utilisateur_service userservice ;
 	
 	
+	@GetMapping(value = "/mdp/{id}/{mdp}")
+	public int updatemdp(@PathVariable int id ,@PathVariable String mdp) {
+		return userservice.updatepasword(id, mdp);
+	}
+	
 	@GetMapping
 
 	public List<Utilisateur> createCandidat() {
